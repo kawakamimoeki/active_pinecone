@@ -37,6 +37,15 @@ class Recipe < ActivePinecone::Base
 end
 ```
 
+### Initialize
+
+Create Pinecone index. Index initialization takes a few minutes.
+
+```ruby
+Post.init
+```
+
+
 ### Create
 
 Pinecone index `Recipe` is created automatically.

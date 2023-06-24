@@ -17,7 +17,7 @@ module ActivePinecone
     end
 
     def self.index_name
-      to_s
+      to_s.downcase.pluralize
     end
 
     def self.pinecone
@@ -33,7 +33,8 @@ module ActivePinecone
     end
 
     def self.embed(input)
-      openai.embeddings(parameters: { model: ActivePinecone.configuration.embedding_model, input: input })
+      embeded = openai.embeddings(parameters: { model: ActivePinecone.configuration.embedding_model, input: input })
+      embeded['data'][0]['embedding']
     end
 
     def self.vectorized_attributes
@@ -49,6 +50,10 @@ module ActivePinecone
       @@vectorized_attributes += attr_names
     end
 
+    def self.init
+      pinecone.create_index({ name: index_name, dimension: ActivePinecone.configuration.dimension, metrics: ActivePinecone.configuration.metrics })
+    end
+
     def self.create(**attributes)
       id = attributes[:id] || SecureRandom.uuid
       index.upsert(vectors: [{ id: id, metadata: attributes, values: embed(attributes.slice(vectorized_attributes).to_json) }])
@@ -57,15 +62,11 @@ module ActivePinecone
 
     def self.delete(id)
       index.delete(ids: [id])
-    rescue ::Pinecone::IndexNotFoundError
-      pinecone.create_index({ name: index_name, dimension: ActivePinecone.configuration.dimension, metrics: ActivePinecone.configuration.metrics })
     end
 
     def self.find(id)
       fetched = index.fetch(ids: [id])
       new(fetched['vectors'][id]['metadata'].merge(id: id).symbolize_keys)
-    rescue ::Pinecone::IndexNotFoundError
-      pinecone.create_index({ name: index_name, dimension: ActivePinecone.configuration.dimension, metrics: ActivePinecone.configuration.metrics })
     end
 
     def self.search(text, filter: {})
@@ -73,15 +74,11 @@ module ActivePinecone
       searched['matches'].map do |match|
         new(match['metadata'].merge(id: match['id']).symbolize_keys)
       end
-    rescue ::Pinecone::IndexNotFoundError
-      pinecone.create_index({ name: index_name, dimension: ActivePinecone.configuration.dimension, metrics: ActivePinecone.configuration.metrics })
     end
 
     def update(**attributes)
       self.class.index.upsert(vectors: [{ id: id, metadata: attributes, values: self.class.embed(attributes.slice(self.class.vectorized_attributes).to_json) }])
       @attributes = attributes
-    rescue ::Pinecone::IndexNotFoundError
-      pinecone.create_index({ name: index_name, dimension: ActivePinecone.configuration.dimension, metrics: ActivePinecone.configuration.metrics })
     end
   end
 end
