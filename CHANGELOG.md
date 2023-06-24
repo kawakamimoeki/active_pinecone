@@ -8,3 +8,7 @@
 
 - Bug fix
 - Add example
+
+## [0.1.2] - 2023-05-24
+
+- Fix README
