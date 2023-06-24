@@ -42,7 +42,7 @@ end
 Create Pinecone index. Index initialization takes a few minutes.
 
 ```ruby
-Post.init
+Recipe.init
 ```
 
 
