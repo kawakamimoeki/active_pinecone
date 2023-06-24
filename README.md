@@ -85,7 +85,10 @@ p recipes.first.title
 Assistant search vector data by **ALL** conversation history and reply.
 
 ```ruby
-assistant = Recipe.assistant
+assistant = Recipe.assistant([
+  "You are the assistant who answers the user's questions about the recipe.",
+  "The list of recipes is as follows:"
+].join("\n"))
 
 reply = assistant.reply("How to make a hamburger?")
 

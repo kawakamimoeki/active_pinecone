@@ -1,9 +1,10 @@
 module ActivePinecone
   class Assistant
-    attr_reader :model
+    attr_reader :model, :instruction
 
-    def initialize(model)
+    def initialize(model, instruction: 'Context:')
       @model = model
+      @instruction = instruction
       @messages_with_system = [{ role: 'system', content: '' }]
     end
 
@@ -20,7 +21,7 @@ module ActivePinecone
 
       records = model.search(messages.pluck(:content))
 
-      @messages_with_system[0][:content] = "Context: #{records.map(&:attributes).to_json}"
+      @messages_with_system[0][:content] = [instruction, records.map(&:attributes).to_json].join("\n")
 
       result = self.class.openai.chat(
         parameters: { model: ActivePinecone.configuration.chat_model, messages: messages, temperature: 0.7 }

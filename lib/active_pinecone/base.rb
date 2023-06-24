@@ -12,8 +12,8 @@ module ActivePinecone
       end
     end
 
-    def self.assistant
-      ActivePinecone::Assistant.new(self)
+    def self.assistant(instruction = 'Context:')
+      ActivePinecone::Assistant.new(self, instruction: instruction)
     end
 
     def self.index_name
