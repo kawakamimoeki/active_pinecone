@@ -33,7 +33,7 @@ Define a model.
 
 ```ruby
 class Recipe < ActivePinecone::Base
-  vectorize :title, :body
+  vectorizes :title, :body
 end
 ```
 
