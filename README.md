@@ -1,5 +1,9 @@
 # ActivePinecone
 
+![v](https://badgen.net/rubygems/v/active_pinecone)
+![dt](https://badgen.net/rubygems/dt/active_pinecone)
+![license](https://badgen.net/github/license/moekidev/active_pinecone)
+
 ActiveRecord-esque base class that lets you use Pinecone.
 Enjoy development with LLM and Rails!
 
