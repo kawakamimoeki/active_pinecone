@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport', '>= 5.0.0'
   spec.add_dependency 'pinecone', '~> 0.1.5'
-  spec.add_dependency 'ruby-openai', '>= 4.1', '< 4.3'
+  spec.add_dependency 'ruby-openai', '>= 4.1', '< 4.4'
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
 end
