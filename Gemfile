@@ -6,6 +6,6 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'activerecord', '~> 6.0'
-gem 'rake', '~> 13.0'
+gem 'rake', '~> 13.1'
 gem 'rspec', '~> 3.0'
 gem 'vcr', '~> 6.0'
